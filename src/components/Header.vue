@@ -1,4 +1,6 @@
 <script setup>
+    import { computed } from 'vue'
+
     let props = defineProps({
         carrito: {
             type: Array,
@@ -10,7 +12,11 @@
         }
     })
 
-    defineEmits(['disminuir-cantidad', 'aumentar-cantidad', 'agregar-carrito'])
+    defineEmits(['disminuir-cantidad', 'aumentar-cantidad', 'agregar-carrito', 'eliminar-producto', 'vaciar-carrito'])
+
+    let totalPago = computed(() => {
+        return props.carrito.reduce((total, producto) => total + (producto.cantidad * producto.precio), 0)
+    })
 </script>
 
 <template>
@@ -52,14 +58,14 @@
                                                 <button type="button" class="btn btn-dark" @click="$emit('aumentarCantidad', producto.id)">+</button>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger" type="button">X</button>
+                                                <button class="btn btn-danger" type="button" @click="$emit('eliminarProducto', producto.id)">X</button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
 
-                                <p class="text-end">Total pagar: <span class="fw-bold">899 €</span></p>
-                                <button class="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>    
+                                <p class="text-end">Total pagar: <span class="fw-bold">{{ totalPago }} €</span></p>
+                                <button class="btn btn-dark w-100 mt-3 p-2" @click="$emit('vaciarCarrito')">Vaciar Carrito</button>    
                             </div>
                         </div>
                     </div>

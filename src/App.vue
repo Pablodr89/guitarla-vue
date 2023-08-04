@@ -1,5 +1,5 @@
 <script setup>
-    import {ref, reactive, onMounted} from 'vue'
+    import {ref, reactive, onMounted, watch} from 'vue'
     import {db} from './data/guitarras'
     import Guitarra from './components/Guitarra.vue'
     import Header from './components/Header.vue'
@@ -17,10 +17,23 @@
     let carrito = ref([])
     let guitarra = ref({})
 
+    watch(carrito, () => {
+        carritoLocalStorage()
+    }, {deep: true})
+
     onMounted(() => {
         guitarras.value = db
         guitarra.value = db[3]
+
+        let carritoStorage = localStorage.getItem('carrito')
+        if(carritoStorage) {
+            carrito.value = JSON.parse(carritoStorage)
+        }
     })
+
+    let carritoLocalStorage = () => {
+        localStorage.setItem('carrito', JSON.stringify(carrito.value))
+    }
 
     let agregarCarrito = (guitarra) => {
         let existeCarrito = carrito.value.findIndex(producto => producto.id === guitarra.id)
@@ -43,6 +56,14 @@
         if(carrito.value[index].cantidad >= 5) return
         carrito.value[index].cantidad++
     }
+
+    let eliminarProducto = (id) => {
+        carrito.value = carrito.value.filter(producto => producto.id !== id)
+    }
+
+    let vaciarCarrito = () => {
+        carrito.value = []
+    }
 </script>
 
 <template>
@@ -52,6 +73,8 @@
         @disminuir-cantidad="disminuirCantidad"
         @aumentar-cantidad="aumentarCantidad"
         @agregar-carrito="agregarCarrito"
+        @eliminar-producto="eliminarProducto"
+        @vaciar-carrito="vaciarCarrito"
     />
 
     <main class="container-xl mt-5">
