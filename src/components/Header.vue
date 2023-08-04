@@ -25,12 +25,12 @@
             <div class="row justify-content-center justify-content-md-between">
                 <div class="col-8 col-md-3">
                     <a href="index.html">
-                        <img class="img-fluid" src="img/logo.svg" alt="imagen logo">
+                        <img class="img-fluid" src="/img/logo.svg" alt="imagen logo">
                     </a>
                 </div>
                 <nav class="col-md-6 a mt-5 d-flex align-items-start justify-content-end">
                     <div class="carrito">
-                        <img class="img-fluid" src="img/carrito.png" alt="imagen carrito" />
+                        <img class="img-fluid" src="/img/carrito.png" alt="imagen carrito" />
 
                         <div id="carrito" class="bg-white p-3">
                             <p class="text-center m-0" v-if="carrito.length === 0">El carrito esta vacio</p>
@@ -46,7 +46,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="producto in carrito">
+                                        <tr v-for="producto in carrito" :key="producto.id">
                                             <td>
                                                 <img class="img-fluid" :src="'img/' + producto.imagen + '.jpg'" :alt="'imagen guitarra ' + producto.nombre">
                                             </td>
@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <img class="header-guitarra" src="img/header_guitarra.png" alt="imagen header">
+        <img class="header-guitarra" src="/img/header_guitarra.png" alt="imagen header">
     </header>
 </template>
 
